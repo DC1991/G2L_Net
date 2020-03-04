@@ -9,3 +9,5 @@ GPU: 1080 Ti
 Programme language: Pytorch 1.0
 
 
+# Architecture
+  Our framework is built on [Frustum-Pointnet](eee)
