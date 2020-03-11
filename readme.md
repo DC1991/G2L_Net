@@ -14,3 +14,6 @@ Our framework is built on [Frustum-Pointnet](https://github.com/charlesq34/frust
 1. First, instead of locating the object point cloud by a frustum, we locate the object point cloud by a 3D sphere, which can limit the 3D search range in a more compact space.   
 2. Second, instead of directly regressing the global point feature to estimate the pose, we propose the point-wise embedding vector features to effectively capture the viewpoint information.  
 3. Third, we estimate the rotation residual between predicted rotation and the ground truth. The rotation residual estimator further boosts the pose estimation accuracy.
+
+More details can be found in our [paper](to be filled)
+
