@@ -17,4 +17,5 @@ Our framework is built on [Frustum-Pointnet](https://github.com/charlesq34/frust
 
 More details can be found in our [paper](to be filled)
 
+Due to COVID-19, I may work from home these days. The code upload may be delayed, thanks for your patience.
 
