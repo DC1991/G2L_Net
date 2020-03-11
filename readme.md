@@ -10,7 +10,4 @@ Programme language: Pytorch 1.0
 
 
 # Architecture
-  Our framework is built on [Frustum-Pointnet](https://github.com/charlesq34/frustum-pointnets) with several improvements:
-  1.
-  2.
-  3.
+  Our framework is built on [Frustum-Pointnet](https://github.com/charlesq34/frustum-pointnets), but we reimplement the code to pytorch (we borrom some code from this [git](https://github.com/fxia22/pointnet.pytorch).)
