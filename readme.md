@@ -6,7 +6,7 @@ OS: Ubuntu 16.04
 
 GPU: 1080 Ti
 
-Programme language: Pytorch 1.0
+Programme language: Python 3.6---Pytorch 1.0
 
 
 # Architecture
@@ -16,4 +16,5 @@ Our framework is built on [Frustum-Pointnet](https://github.com/charlesq34/frust
 3. Third, we estimate the rotation residual between predicted rotation and the ground truth. The rotation residual estimator further boosts the pose estimation accuracy.
 
 More details can be found in our [paper](to be filled)
+
 
