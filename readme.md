@@ -15,7 +15,12 @@ Our framework is built on [Frustum-Pointnet](https://github.com/charlesq34/frust
 2. Second, instead of directly regressing the global point feature to estimate the pose, we propose the point-wise embedding vector features to effectively capture the viewpoint information.  
 3. Third, we estimate the rotation residual between predicted rotation and the ground truth. The rotation residual estimator further boosts the pose estimation accuracy.
 
-More details can be found in our [paper](to be filled)
+More details can be found in our [paper](https://arxiv.org/abs/2003.11089).
 
 Due to COVID-19, I may work from home these days. The code upload may be delayed, thanks for your patience.
+
+# Demo & Testing
+
+# Training
+
 
