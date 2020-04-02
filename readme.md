@@ -22,5 +22,7 @@ Due to COVID-19, I may work from home these days. The code upload may be delayed
 # Demo & Testing
 
 # Training
+## YOLOv3
+For implementation & training YOLOv3 please refer to this git: https://github.com/ultralytics/yolov3
 
 
