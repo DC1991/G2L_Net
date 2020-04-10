@@ -1,5 +1,0 @@
-classes= 1
-train  = ''
-valid  = ''
-names = ../data/obj.names
-backup = list_line/6
