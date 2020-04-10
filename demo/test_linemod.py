@@ -276,7 +276,7 @@ if __name__ == '__main__':
 
 
         rgbp = base_path + '/img/%04d.png' % (idxx)
-        depthp = base_path + '/depo/%04d.png' % (idxx)
+        depthp = base_path + '/depth/%04d.png' % (idxx)
 
         rgb = cv2.imread(rgbp)
         rgbs.append(rgb)
