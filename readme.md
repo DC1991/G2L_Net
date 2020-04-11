@@ -1,4 +1,3 @@
-Code will be release soon.
 
 # Experiment setup
 
@@ -17,7 +16,6 @@ Our framework is built on [Frustum-Pointnet](https://github.com/charlesq34/frust
 
 More details can be found in our [paper](https://arxiv.org/abs/2003.11089).
 
-Due to COVID-19, I may work from home these days. The code upload may be delayed, thanks for your patience.
 
 # Demo & Testing
 The command for demo:
