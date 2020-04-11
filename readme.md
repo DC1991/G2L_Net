@@ -21,7 +21,9 @@ Due to COVID-19, I may work from home these days. The code upload may be delayed
 
 # Demo & Testing
 The command for demo:
+
 cd demo/
+
 python test_linemod
 
 # Training
