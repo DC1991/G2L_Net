@@ -5,7 +5,7 @@ OS: Ubuntu 16.04
 
 GPU: 1080 Ti
 
-Programme language: Python 3.6---Pytorch 1.0
+Programme language: Python 3.6
 
 
 # Architecture
