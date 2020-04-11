@@ -16,6 +16,10 @@ Our framework is built on [Frustum-Pointnet](https://github.com/charlesq34/frust
 
 More details can be found in our [paper](https://arxiv.org/abs/2003.11089).
 
+# Pre requirements
+Install the libraries by:
+
+python install -r requirements.txt
 
 # Demo & Testing
 The command for demo:
