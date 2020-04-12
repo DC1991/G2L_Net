@@ -16,6 +16,16 @@ Our framework is built on [Frustum-Pointnet](https://github.com/charlesq34/frust
 
 More details can be found in our [paper](https://arxiv.org/abs/2003.11089).
 
+If you find our code or paper is useful, please cite our paper:
+
+@article{chen2020g2l,
+  title={G2L-Net: Global to Local Network for Real-time 6D Pose Estimation with Embedding Vector Features},
+  author={Chen, Wei and Jia, Xi and Chang, Hyung Jin and Duan, Jinming and Leonardis, Ales},
+  journal={arXiv},
+  pages={arXiv--2003},
+  year={2020}
+}
+
 # Pre requirements
 Install the libraries by:
 
