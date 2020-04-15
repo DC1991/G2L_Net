@@ -119,11 +119,7 @@ def load_models_yolo(obj=15):
     opt = parser.parse_args()
     opt.cfg = cfg
 
-    if obj == 15:
-        R1 = get_rotation(90, 0, 0)
-        R2 = get_rotation(0, 0, 90)
-
-        pc = np.dot(R2, np.dot(R1, pc.T)).T
+    
     OR1, xr, yr, zr = get_3D_corner(pc)
 
     OR = get_change_3D(xr, yr, zr)
