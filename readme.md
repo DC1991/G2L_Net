@@ -44,8 +44,4 @@ python test_linemod
 ### YOLOv3
 For implementation & training YOLOv3 please refer to this git: https://github.com/ultralytics/yolov3
 
-### G2L_Net
-The training code will be released in the future.
-
-
 
