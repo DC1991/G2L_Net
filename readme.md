@@ -18,12 +18,13 @@ More details can be found in our [paper](https://arxiv.org/abs/2003.11089). Our 
 
 If you find our code or paper is useful, please cite our paper:
 
-@article{chen2020g2l,<br>
-  title={G2L-Net: Global to Local Network for Real-time 6D Pose Estimation with Embedding Vector Features},<br>
-  author={Chen, Wei and Jia, Xi and Chang, Hyung Jin and Duan, Jinming and Leonardis, Ales},<br>
-  journal={arXiv},<br>
-  pages={arXiv--2003},<br>
-  year={2020}<br>
+
+@InProceedings{Chen_2020_CVPR,<br>
+author = {Chen, Wei and Jia, Xi and Chang, Hyung Jin and Duan, Jinming and Leonardis, Ales},<br>
+title = {G2L-Net: Global to Local Network for Real-Time 6D Pose Estimation With Embedding Vector Features},<br>
+booktitle = {IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},<br>
+month = {June},<br>
+year = {2020}<br>
 }<br>
 
 ## Pre requirements
