@@ -41,6 +41,8 @@ cd demo/
 
 python test_linemod
 
+Please note, we only provide 20 images for quick test, if you need to test the whole sequence, you can download the LINEMOD dataset [here](http://ptak.felk.cvut.cz/6DB/public/bop_datasets/lm_test_all.zip)
+
 ## Training
 ### YOLOv3
 For implementation & training YOLOv3 please refer to this git: https://github.com/ultralytics/yolov3
