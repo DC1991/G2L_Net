@@ -14,7 +14,7 @@ Our framework is built on [Frustum-Pointnet](https://github.com/charlesq34/frust
 2. Second, instead of directly regressing the global point feature to estimate the pose, we propose the point-wise embedding vector features to effectively capture the viewpoint information.  
 3. Third, we estimate the rotation residual between predicted rotation and the ground truth. The rotation residual estimator further boosts the pose estimation accuracy.
 
-More details can be found in our [paper](http://openaccess.thecvf.com/content_CVPR_2020/papers/Chen_G2L-Net_Global_to_Local_Network_for_Real-Time_6D_Pose_Estimation_CVPR_2020_paper.pdf). Our AD_VIDEO for CVPR 2020 Virtual Presentation is availabel at [youtube](https://www.youtube.com/watch?v=a5JWe6mOAEs)
+More details can be found in our [paper](http://openaccess.thecvf.com/content_CVPR_2020/papers/Chen_G2L-Net_Global_to_Local_Network_for_Real-Time_6D_Pose_Estimation_CVPR_2020_paper.pdf). Our AD_VIDEO for CVPR 2020 Virtual Presentation is availabel at [youtube](https://www.youtube.com/watch?v=a5JWe6mOAEs).
 
 If you find our code or paper is useful, please cite our paper:
 
