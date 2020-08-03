@@ -312,9 +312,9 @@ class Point_box_R_es(nn.Module):
         return x
 
 
-class Voting_vec(nn.Module):
-    def __init__(self, k=24,F=1036):
-        super(Voting_vec, self).__init__()
+class Rotation_pre(nn.Module):
+    def __init__(self, k=24,F=2256):
+        super(Rotation_pre, self).__init__()
         self.f=F
         self.k = k
 

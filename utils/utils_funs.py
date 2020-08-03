@@ -3,13 +3,12 @@
 # @Project : PyCharm
 import numpy as np
 import cv2
-import cv2.aruco as aruco
+
 import ctypes as ct
 import math
 import os
 import sys
-from G2L_Net.utils import renderer
-
+import torch
 
 def get_corners(obj, temp,num=8):
     obj=int(obj)
@@ -585,11 +584,6 @@ def seg2txt(seg,idx,rgb_path):
 
     fid.close()
 
-def data_augment_one_myycb_syn(R,t,K, model, im_size, mode):
-    data = renderer.render(model, im_size, K, R, t, 100, 3000, mode=mode)
-
-
-    return data
 def trans_3d(pc,Rt,Tt):
 
     '''
@@ -624,3 +618,148 @@ def get6dpose2_f(pcc,Rt,Tt,R,T):
     dis=sum(ss.flatten())/pcc.shape[0]
 
     return dis
+
+def read_RT(obj):
+    base_path = '../models/%d/' % (obj)
+
+    R=np.loadtxt(base_path+'R.txt')
+    T=np.loadtxt(base_path+'T.txt')
+    return R, T
+
+def get_vectors(pts, kps, vn=1):
+    '''
+
+    :param pts: N*3
+    :param kps: M*3
+    :return:
+    '''
+
+    ## N M 3
+    pts.view(-1,3)
+
+
+    kps=kps.view(-1,3)
+    N=pts.shape[0]
+
+
+    M=kps.shape[0]
+
+
+    pts=pts.unsqueeze(1).repeat(1,M,1)## N M 3
+    kps=kps.unsqueeze(0).repeat(N,1,1)## N M 3
+    vecs=kps-pts.float() ## N M 3
+
+    if vn==1:
+        vn=vecs.norm(dim=2, keepdim=True) ## N M 1
+        vn=vn.repeat(1,1,3) ## N M 3
+        vecs=vecs/vn ## N M 3
+        return vecs.view(pts.shape[0], -1)  ## N M*3
+    else:
+        return vecs.view(pts.shape[0], -1)  ## N M*3
+def data_augment(points, Rs, Ts, obj_id, temp, num_c, target_seg, idxs,ax=5, ay=5, az=25, a=10):
+
+    centers = np.zeros((points.shape[0], 3))
+    corners = np.zeros((points.shape[0], 3 * num_c))
+    vecs = torch.zeros(points.shape[0], points.shape[1], 3*num_c)
+    pts0 = points.copy()
+    for ii in range(points.shape[0]):
+
+        idx = idxs[ii].item()
+
+        Rt = Rs[idx * 3:(idx + 1) * 3, 0:3]
+        Tt = Ts[idx]
+
+        res = np.mean(points[ii], 0)
+        points[ii, :, 0:3] = points[ii, :, 0:3] - np.array([res[0], res[1], res[2]])
+
+
+
+        dx = np.random.randint(-ax, ax)
+        dy = np.random.randint(-ay, ay)
+        dz = np.random.randint(-az, az)
+
+        points[ii, :, 0] = points[ii, :, 0] + dx
+        points[ii, :, 1] = points[ii, :, 1] + dy
+        points[ii, :, 2] = points[ii, :, 2] + dz
+
+
+
+
+        Rm = get_rotation(np.random.uniform(-a, a), np.random.uniform(-a, a), np.random.uniform(-a, a))
+
+        points[ii, :, 0:3] = np.dot(Rm, points[ii, :, 0:3].T).T
+
+        pts_seg = pts0[ii, np.where(target_seg.numpy()[ii, :] == 1)[0], 0:3]
+        centers[ii,:]=Tt.T-np.mean(pts_seg,0)
+
+
+        Tt_c = np.array([0, 0, 0]).T
+        corners_ = get_corners(obj_id[ii].numpy(), temp, num=num_c)
+
+        pts_noT = pts_seg - Tt.T
+
+
+        pts_noT =np.dot(Rm, pts_noT.T).T
+
+
+        corners[ii, :] = (trans_3d(corners_ , np.dot(Rm, Rt), Tt_c).T).flatten()
+        vecs[ii, np.where(target_seg[ii, :] == 1)[0]] = get_vectors(torch.from_numpy(pts_noT), torch.from_numpy(corners[ii, :]).float())
+
+
+    return points, corners, centers, vecs
+
+def get_RT_bat(P,Q, a=2,b=2,c=2):
+
+    '''
+
+    :param P: B*N*3
+    :param Q: B*N*3
+    :return:
+    '''
+
+    P1=P-P.mean(dim=1,keepdim=True)
+    Q1=Q-Q.mean(dim=1, keepdim=True)
+
+    C = torch.bmm(P1.transpose(1,2), Q1)## B*3*3
+
+    # Computation of the optimal rotation matrix
+    # This can be done using singular value decomposition (SVD)
+    # Getting the sign of the det(V)*(W) to decide
+    # whether we need to correct our rotation matrix to ensure a
+    # right-handed coordinate system.
+    # And finally calculating the optimal rotation matrix U
+    # see http://en.wikipedia.org/wiki/Kabsch_algorithm
+
+    R=torch.ones(C.shape[0],3,3).cuda()
+    for ib in range(C.shape[0]):
+
+
+
+        U, S, V = torch.svd(C[ib,:,:])
+
+        d = (torch.det(V) * torch.det(U.transpose(0,1))) < 0.0
+
+
+
+        if d:
+            S[-1] = -S[-1]
+            V[-1, :] = -V[-1, :]
+
+        # E = np.diag(np.array([1, 1, 1]))
+        E=torch.diag(torch.Tensor([1,1,1])).cuda()
+        if a>0:
+            x = np.random.randint(-a, a)
+            y = np.random.randint(-b, b)
+            z = np.random.randint(-c, c)
+            Rm = get_rotation(x, y, z)
+            Rm = torch.Tensor(Rm).cuda()
+            R[ib, :, :] = torch.mm(Rm, torch.mm(V, torch.mm(E, U.transpose(0, 1))))
+        else:
+            R[ib, :, :] = torch.mm(V, torch.mm(E, U.transpose(0, 1)))
+
+
+    # T=Q-torch.bmm(R,P.transpose(1,2)).transpose(2,1)
+    cors= torch.bmm(R, P.transpose(1, 2)).transpose(2, 1)
+
+
+    return cors

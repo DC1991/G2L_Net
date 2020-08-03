@@ -6,7 +6,7 @@
 import argparse
 from G2L_Net.yolov3.utils.utils import non_max_suppression
 from G2L_Net.yolov3.models import Darknet, load_darknet_weights
-from G2L_Net.utils.networks_usage import demo_ycb, load_models
+from G2L_Net.utils.networks_usage import demo_linemod, load_models
 from G2L_Net.utils.utils_funs import get_rotation, get_3D_corner, get_change_3D, depth_2_mesh_bbx, define_paras
 import cv2
 
@@ -103,7 +103,7 @@ def load_models_yolo(obj=15):
 
     classifier, classifier_ce, classifier_box, classifier_box_gan, classifier_box_vec = load_models(obj, 199)
 
-    model_path = '../models/%d/obj_01.ply' % (obj)  ## m
+    model_path = '../models/%d/obj_%02d.ply' % (obj, obj)  ## m
     model2 = inout.load_ply(model_path)
     pc = model2['pts']
 
@@ -230,13 +230,14 @@ def test(rgb, depth_, idx, model, classifier, classifier_ce, classifier_box, cla
             dep3d = chooselimt_test(dep3d, 102, cen_depth)  ##3 *N
 
 
-            D_loss =100
+            R = np.eye(3)
+            T = 0
             if dep3d.shape[0] < 5:
                 print('No enough valid depth points !!!')
             else:
 
-                D_loss =demo_ycb(dep3d, rgb0, rgb01, classifier, classifier_ce, classifier_box, classifier_box_gan, classifier_box_vec, pc, Rt, Tt, OR=OR, imgid=idx, temp=temp)
-            return D_loss
+                R, T =demo_linemod(dep3d, rgb0, rgb01, classifier, classifier_ce, classifier_box, classifier_box_gan, classifier_box_vec, pc, Rt, Tt, OR=OR, temp=temp)
+            return R, T
 
 
 if __name__ == '__main__':
@@ -247,6 +248,7 @@ if __name__ == '__main__':
 
     file_obj = open(val_list)
     all_lines = file_obj.readlines()
+    file_obj.close()
     lists = []
     for line in all_lines:
         lists.append(line)
@@ -281,5 +283,5 @@ if __name__ == '__main__':
         depth = cv2.imread(depthp, -1)
         deps.append(depth)
 
-        loss = test(rgbs, deps, idx, model, classifier, classifier_ce, classifier_box, classifier_box_gan, classifier_box_vec, opt, pc, OR, Rt, Tt, imgid=idxx, temp=temp)
+        R, T = test(rgbs, deps, idx, model, classifier, classifier_ce, classifier_box, classifier_box_gan, classifier_box_vec, opt, pc, OR, Rt, Tt, imgid=idxx, temp=temp)
 

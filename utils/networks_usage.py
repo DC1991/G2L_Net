@@ -11,12 +11,12 @@ import matplotlib.pyplot as plt
 import torch.nn as nn
 import os
 import argparse
-from G2L_Net.utils.networks_arch import Seg_3D, Point_center_res,Point_box_v_es,Point_box_R_es,Voting_vec
+from G2L_Net.utils.networks_arch import Seg_3D, Point_center_res,Point_box_v_es,Point_box_R_es,Rotation_pre
 
 def load_models(obj, epoch=199):
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--batchSize', type=int, default=1, help='input batch size')
+    parser.add_argument('--batchsize', type=int, default=1, help='input batch size')
     parser.add_argument('--workers', type=int, help='number of data loading workers', default=4)
     parser.add_argument('--nepoch', type=int, default=epoch, help='number of epochs to train for')
     parser.add_argument('--outf', type=str,
@@ -35,7 +35,7 @@ def load_models(obj, epoch=199):
     classifier_box = Point_box_v_es(num_c, inputchannel=3)
     classifier_box_gan = Point_box_R_es(num_c)
 
-    classifier_box_vec = Voting_vec(F=2280)
+    classifier_box_vec = Rotation_pre(F=2280)
 
 
     Loss_func_ce = nn.MSELoss()
@@ -88,7 +88,7 @@ def load_models(obj, epoch=199):
 
     return classifier, classifier_ce, classifier_box, classifier_box_gan, classifier_box_vec
 
-def demo_ycb(pts_ycb, rgb, rgb2,classifier,classifier_ce,classifier_box,classifier_box_gan,classifier_box_vec, pc, Rt=0, Tt=0, OR = 0, imgid = 0, temp=0):
+def demo_linemod(pts, rgb, rgb2,classifier,classifier_ce,classifier_box,classifier_box_gan,classifier_box_vec, pc, Rt=0, Tt=0, OR = 0, temp=0):
     numc = 8
     num_c = 8
 
@@ -99,12 +99,9 @@ def demo_ycb(pts_ycb, rgb, rgb2,classifier,classifier_ce,classifier_box,classifi
 
 
 
-    points = torch.Tensor(pts_ycb).unsqueeze(0)
+    points = torch.Tensor(pts).unsqueeze(0)
     ptsori = points.clone()
 
-
-
-    point_ori = points.numpy()[0, :, 0:3]
 
 
     obj_id = torch.Tensor([obj])
@@ -153,7 +150,6 @@ def demo_ycb(pts_ycb, rgb, rgb2,classifier,classifier_ce,classifier_box,classifi
         box_pt = box_pt.transpose(3, 1)
         box_pred, feat = classifier_box(box_pt, obj_id, 1)
 
-        B = points.shape[0]
 
         corners_ = corners_.reshape((numc, 1, 3))
 
@@ -185,18 +181,6 @@ def demo_ycb(pts_ycb, rgb, rgb2,classifier,classifier_ce,classifier_box,classifi
 
         Rg = pose_gan[0][0:3, 0:3]
 
-        K = define_paras()['K']
-        rgb0 = rgb
-        rgb0 = draw_cors_lite(rgb0, pc, K, R, T, 0, [255, 0, 0], OR)
-        rgb0 = draw_cors_lite(rgb0, pc, K, Rt, Tt, 0, [255, 255, 255], OR)
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        cv2.putText(rgb0, '6D pose', (50, 50), font, 1, (0, 0, 0), 3, 0)
-        cv2.putText(rgb2, '2D detection', (50, 50), font, 1, (0, 0, 0), 3, 0)
-        show_seg = showpoints(point_ori, pred_color0, ballradius=3, waittime=10)
-        final_frame = cv2.hconcat((rgb2, rgb0))
-        cv2.imshow('pose', final_frame)
-        cv2.waitKey(10)
 
-        D_loss  = get6dpose2_f(pc, Rt, Tt, Rg, T)
 
-        return  D_loss
+        return  Rg, T
