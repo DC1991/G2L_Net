@@ -44,8 +44,22 @@ python test_linemod
 Please note, we only provide 20 images for quick test, if you need to test the whole sequence, you can download the LINEMOD dataset [here](http://ptak.felk.cvut.cz/6DB/public/bop_datasets/lm_test_all.zip).
 
 ## Training
+
+Due to some minor changes to the code, the parameters are slightly different from the paper.
+
 ### YOLOv3
 For implementation & training YOLOv3 please refer to this [git](https://github.com/ultralytics/yolov3).
 
 ### G2L_Net
-The training code will be released in next month.
+
+#### training data
+We provide the point cloud (and point wise label) which transfered from depth image of object 'cat' in LINEMOD. Please download the training data from [here](https://drive.google.com/drive/folders/194BceEL-YV6MXW9v0iE8uau_ZzFvN2RL?usp=sharing). After downloading the data, please unzip the data to "train_data" folder.
+
+#### training command
+cd train/
+
+python train_G2L.py
+
+
+
+
