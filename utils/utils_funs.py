@@ -153,7 +153,7 @@ def gettrans(kps,h):
 
     return hss
 
-def draw_cors_lite(img,pc,K,R_,T_,fr,color,OR, lindwidth=2):
+def draw_cors_lite(img,K,R_,T_,color,OR, lindwidth=2):
     T_=T_.reshape((3,1))
 
     R=R_
@@ -707,59 +707,3 @@ def data_augment(points, Rs, Ts, obj_id, temp, num_c, target_seg, idxs,ax=5, ay=
 
 
     return points, corners, centers, vecs
-
-def get_RT_bat(P,Q, a=2,b=2,c=2):
-
-    '''
-
-    :param P: B*N*3
-    :param Q: B*N*3
-    :return:
-    '''
-
-    P1=P-P.mean(dim=1,keepdim=True)
-    Q1=Q-Q.mean(dim=1, keepdim=True)
-
-    C = torch.bmm(P1.transpose(1,2), Q1)## B*3*3
-
-    # Computation of the optimal rotation matrix
-    # This can be done using singular value decomposition (SVD)
-    # Getting the sign of the det(V)*(W) to decide
-    # whether we need to correct our rotation matrix to ensure a
-    # right-handed coordinate system.
-    # And finally calculating the optimal rotation matrix U
-    # see http://en.wikipedia.org/wiki/Kabsch_algorithm
-
-    R=torch.ones(C.shape[0],3,3).cuda()
-    for ib in range(C.shape[0]):
-
-
-
-        U, S, V = torch.svd(C[ib,:,:])
-
-        d = (torch.det(V) * torch.det(U.transpose(0,1))) < 0.0
-
-
-
-        if d:
-            S[-1] = -S[-1]
-            V[-1, :] = -V[-1, :]
-
-        # E = np.diag(np.array([1, 1, 1]))
-        E=torch.diag(torch.Tensor([1,1,1])).cuda()
-        if a>0:
-            x = np.random.randint(-a, a)
-            y = np.random.randint(-b, b)
-            z = np.random.randint(-c, c)
-            Rm = get_rotation(x, y, z)
-            Rm = torch.Tensor(Rm).cuda()
-            R[ib, :, :] = torch.mm(Rm, torch.mm(V, torch.mm(E, U.transpose(0, 1))))
-        else:
-            R[ib, :, :] = torch.mm(V, torch.mm(E, U.transpose(0, 1)))
-
-
-    # T=Q-torch.bmm(R,P.transpose(1,2)).transpose(2,1)
-    cors= torch.bmm(R, P.transpose(1, 2)).transpose(2, 1)
-
-
-    return cors

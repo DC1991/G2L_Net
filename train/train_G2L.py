@@ -117,13 +117,13 @@ for obj in [6]:
             points_ = ptsori.numpy().copy()
 
 
-            points_a, corners, centers, vecs = data_augment(points_[:, :, 0:3], Rs, Ts, obj_id, Dia, num_c, target_seg, idxs,ax=5, ay=5,az=25, a=10.0)
+            points_a, corners, centers, vecs = data_augment(points_, Rs, Ts, obj_id, Dia, num_c, target_seg, idxs,ax=5, ay=5,az=25, a=10.0)
 
 
             points, target_seg, vecs = torch.from_numpy(points_a).cuda(), target_seg.cuda(), vecs.cuda()
 
 
-            pointsf = points[:, :, 0:3].unsqueeze(2)
+            pointsf = points.unsqueeze(2)
 
             optimizer.zero_grad()
 
@@ -145,7 +145,7 @@ for obj in [6]:
                 if len(p[ib, :].nonzero()[:, 0]) < 10:
                     continue
 
-                pts_ = torch.index_select(ptsori[ib, :, 0:3], 0, p[ib, :].nonzero()[:, 0])  ##Nx3
+                pts_ = torch.index_select(ptsori, 0, p[ib, :].nonzero()[:, 0])  ##Nx3
                 vecs_ = torch.index_select(vecs[ib, :, :], 0, p[ib, :].nonzero()[:, 0])
                 choice = np.random.choice(len(pts_), N_seg, replace=True)
                 pts_s[ib, :, :] = pts_[choice, :]
