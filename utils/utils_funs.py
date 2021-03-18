@@ -37,33 +37,6 @@ def get_corners(obj, temp,num=8):
     corners[7, :] = np.array([maxx, maxy, maxz])
     return corners[::8//num,:]
 
-def get_corners_cube(obj,num=8):
-
-    minx = -40
-    miny =  -40
-    minz =  -40
-    sizex = 80
-    sizey = 80
-    sizez = 80
-
-    maxx=minx+sizex
-    maxy=miny+sizey
-    maxz=minz+sizez
-
-
-    corners=np.zeros((8,3),dtype=np.float32)
-
-    corners[0,:]=np.array([minx,miny,minz])
-    corners[1, :] = np.array([minx, miny, maxz])
-    corners[2, :] = np.array([minx, maxy, minz])
-    corners[3, :] = np.array([minx, maxy, maxz])
-
-    corners[4, :] = np.array([maxx, miny, minz])
-    corners[5, :] = np.array([maxx, miny, maxz])
-    corners[6, :] = np.array([maxx, maxy, minz])
-    corners[7, :] = np.array([maxx, maxy, maxz])
-    return corners[0:num,:]
-
 
 def define_paras():
     CFG={}
