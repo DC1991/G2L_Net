@@ -1,4 +1,5 @@
 # 6D Pose Estimation
+For quick download, please download the code from here [G2L_light](https://github.com/DC1991/G2L_light). For the trained model and useage please refer to the following instructions.
 ## Experiment setup
 
 OS: Ubuntu 16.04
