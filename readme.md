@@ -1,7 +1,7 @@
 # 6D Pose Estimation
 For quick download, please download the code from here [G2L_light](https://github.com/DC1991/G2L_light). For the trained model and useage please refer to the following instructions.
 
-If you also interesting in how to do category-level pose estimation please refer to our new [work](https://github.com/DC1991/FS-Net).
+If you also interesting in how to do category-level pose estimation please refer to our new work [FS-Net](https://github.com/DC1991/FS-Net).
 
 ## Experiment setup
 
