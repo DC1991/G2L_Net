@@ -58,7 +58,9 @@ For implementation & training YOLOv3 please refer to this [git](https://github.c
 ### G2L_Net
 
 #### training data
-We provide the point cloud (and point wise label) which transfered from depth image of object 'cat' in LINEMOD. Please download the training data from [here](https://drive.google.com/drive/folders/194BceEL-YV6MXW9v0iE8uau_ZzFvN2RL?usp=sharing). After downloading the data, please unzip the data to "train_data" folder. Please note, in the data the point cloud has six dimension:[x, y, z, r, g, b], we only use the first three dimension:[x, y, z]. For the corresponding label, it has 13 dimension, we only use the first dimension. The last 12 values are useless now. 
+We provide the point cloud (and point wise label) which transfered from depth image of object 'cat' in LINEMOD. Please download the training data from [here](https://drive.google.com/drive/folders/194BceEL-YV6MXW9v0iE8uau_ZzFvN2RL?usp=sharing). After downloading the data, please unzip the data to "train_data" folder. Please note, in the data the point cloud has six dimension:[x, y, z, r, g, b], we only use the first three dimension:[x, y, z]. For the corresponding label, it has 13 dimension, we only use the first dimension. The last 12 values are useless now.   
+
+If you want to generate your own training data, you can use the code provide in [FS-Net](https://github.com/DC1991/FS_Net/blob/main/gen_pts.py).
 
 #### training command
 cd train/
